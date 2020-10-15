@@ -1,11 +1,11 @@
 <?php
 
 use Alura\Pdo\Domain\Model\Student;
+use Alura\Pdo\Infra\Persistence\ConnectionCreator;
 
 require_once 'vendor/autoload.php';
 
-$caminhaBanco = __DIR__ . '/banco.sqlite';
-$pdo = new PDO('sqlite:' . $caminhaBanco);
+$pdo = ConnectionCreator::createConnection();
 
 $sqlDelete = "DELETE FROM students WHERE id = ?;";
 $statement = $pdo->prepare($sqlDelete);
