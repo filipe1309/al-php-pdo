@@ -8,7 +8,7 @@ $caminhaBanco = __DIR__ . '/banco.sqlite';
 $pdo = new PDO('sqlite:' . $caminhaBanco);
 
 $statement = $pdo->query('SELECT * FROM students;');
-// $studentDataList = $statement->fetchAll(PDO::FETCH_ASSOC);
+$studentDataList = $statement->fetchAll(PDO::FETCH_ASSOC);
 // var_dump($statement->fetchColumn(1)); exit();
 // var_dump($statement->fetchAll(PDO::FETCH_CLASS, Student::class));
 
