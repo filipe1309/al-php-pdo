@@ -36,7 +36,7 @@ class PdoStudentRepository implements StudentRepository
 
     public function hydrateStudentList($stmt)
     {
-        $studentDataList = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $studentDataList = $stmt->fetchAll();
         $studentList = [];
 
         foreach ($studentDataList as $studentData) {
