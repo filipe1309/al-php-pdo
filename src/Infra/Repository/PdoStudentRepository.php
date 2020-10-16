@@ -59,9 +59,6 @@ class PdoStudentRepository implements StudentRepository
     {
         $sqlInsert = "INSERT INTO students (name, birth_date) VALUES (:name, :birth_date);";
         $statement = $this->connection->prepare($sqlInsert);
-        if ($statement == false) {
-            throw new \RuntimeException($this->connection->errorInfo()[2]);
-        }
 
         $result = $statement->execute([
             'name' => $student->name(),
