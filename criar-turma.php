@@ -11,13 +11,19 @@ $studentRepository = new PdoStudentRepository($connection);
 
 // cria turma
 $connection->beginTransaction();
-$aStudent = new Student(null, 'Elvis Presley', new \DateTimeImmutable('1985-05-01'));
-$studentRepository->save($aStudent);
 
-
-$anotherStudent = new Student(null, 'Paul Mc', new \DateTimeImmutable('1985-05-01'));
-$studentRepository->save($anotherStudent);
-
-$connection->commit();
+try {
+    $aStudent = new Student(null, 'Elvis Presley', new \DateTimeImmutable('1985-05-01'));
+    $studentRepository->save($aStudent);
+    
+    
+    $anotherStudent = new Student(null, 'Paul Mc', new \DateTimeImmutable('1985-05-01'));
+    $studentRepository->save($anotherStudent);
+    
+    $connection->commit();
+} catch (\RuntimeException $e) {
+    echo $e->getMessage();
+    $connection->rollback();
+}
 
 // insere alunos
