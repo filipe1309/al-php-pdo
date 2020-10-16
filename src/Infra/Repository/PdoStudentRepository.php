@@ -3,15 +3,17 @@
 namespace Alura\Pdo\Infra\Repository;
 
 use PDO;
+use Alura\Pdo\Domain\Model\student;
 use Alura\Pdo\Infra\Persistence\ConnectionCreator;
+use Alura\Pdo\Domain\Repository\StudentRepository;
 
 class PdoStudentRepository implements StudentRepository
 {
     private PDO $connection;
 
-    public function __construct()
+    public function __construct(PDO $connection)
     {
-        $this->connection = ConnectionCreator::createConnection();   
+        $this->connection = $connection;
     }
 
     public function allStudents(): array
@@ -36,7 +38,7 @@ class PdoStudentRepository implements StudentRepository
     {
         $studentDataList = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         $studentList = [];
-        
+
         foreach ($studentDataList as $studentData) {
             $studentList[] = new Student($studentData['id'], $studentData['name'], new DateTimeImmutable($studentData['birth_date']));
         }

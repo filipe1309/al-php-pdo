@@ -2,7 +2,7 @@
 
 namespace Alura\Pdo\Domain\Repository;
 
-use Alura\Pdo\Model\student;
+use Alura\Pdo\Domain\Model\student;
 
 interface StudentRepository
 {
