@@ -3,6 +3,7 @@
 namespace Alura\Pdo\Infra\Repository;
 
 use PDO;
+use Alura\Pdo\Domain\Model\Phone;
 use Alura\Pdo\Domain\Model\student;
 use Alura\Pdo\Infra\Persistence\ConnectionCreator;
 use Alura\Pdo\Domain\Repository\StudentRepository;
@@ -40,10 +41,31 @@ class PdoStudentRepository implements StudentRepository
         $studentList = [];
 
         foreach ($studentDataList as $studentData) {
-            $studentList[] = new Student($studentData['id'], $studentData['name'], new DateTimeImmutable($studentData['birth_date']));
+            $student = new Student($studentData['id'], $studentData['name'], new \DateTimeImmutable($studentData['birth_date']));
+            $this->fillPhonesOf($student);
+            $studentList[] = $student;
         }
 
         return $studentList;
+    }
+
+    private function fillPhonesOf(Student $student): void
+    {
+        $sqlQuery = 'SELECT id, area_code, number FROM phones WHERE student_id = ?';
+        $stmt = $this->connection->prepare($sqlQuery);
+        $stmt->bindValue(1, $student->id(), PDO::PARAM_INT);
+        $stmt->execute();
+
+        $phoneDataList = $stmt->fetchAll();
+        foreach ($phoneDataList as $phoneData) {
+            $phone = new Phone(
+                $phoneData['id'],
+                $phoneData['area_code'],
+                $phoneData['number'],
+            );
+
+            $student->addPhone($phone);
+        }
     }
     
     public function save(Student $student): bool
